@@ -17,10 +17,10 @@ function mapTexture(geojson, color) {
     .projection(projection)
     .context(context);
 
-  context.strokeStyle = "#eee";
-  context.lineWidth = 0.8;
-  context.fillStyle = color || "#00B380";
-  context.globalAlpha = 0.4;
+  context.strokeStyle = "#fff";
+  context.lineWidth = 1.5;
+  context.fillStyle = color || "#6600B380";
+  // context.globalAlpha = 0.4;
 
 
 

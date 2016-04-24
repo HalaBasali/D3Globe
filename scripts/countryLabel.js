@@ -9,26 +9,28 @@ define(["three", ], function(THREE) {
 	// var material = new THREE.MeshBasicMaterial({map : dynamicTexture.texture});
 	// var text = new THREE.Mesh(geometry, material);
 
-// var text = document.createElement('div');
-// text.style.position = 'absolute';
-// text.style.width = 200 + 'px';
-// text.style.height = 50 + 'px';
-// text.style.backgroundColor = "white";
-// text.innerHTML = "Deutschland";
-// text.style.top = 200 + 'px';
-// text.style.left = 200 + 'px';
-// document.body.appendChild(text);
+	function displayCountry(countryname) {
+		var text = document.createElement('div');
+		text.style.position = 'absolute';
+		text.style.width = 200 + 'px';
+		text.style.height = 50 + 'px';
+		text.style.backgroundColor = "white";
+		text.innerHTML = "Deutschland";
+		text.style.top = 200 + 'px';
+		text.style.left = 200 + 'px';
+		document.body.appendChild(text);
 
-// var img = document.createElement("img");
-// img.src = 'img/flagge_de.png';
-// img.setAttribute("width", "50");
-// img.setAttribute("position", "right");
-// img.setAttribute("alt", "Flower");
-// text.appendChild(img);
+		// var img = document.createElement("img");
+		// img.src = 'img/flagge_de.png';
+		// img.setAttribute("width", "50");
+		// img.setAttribute("position", "right");
+		// img.setAttribute("alt", "Flower");
+		// text.appendChild(img);
+	}
 
-	// var LABELS = {
-	// 	text: text
-	// };
-	// return LABELS;
+	var COUNTRY = {
+		displayCountry: displayCountry
+	};
+	return COUNTRY;
 
 });

@@ -1,19 +1,22 @@
   'use strict';
   define(["three", "jquery", "d3", "topojson", "scene", "geo", "utils", "mapTexture", "setEvents", "label", "trackback"],
-    function(THREE, $, d3, topojson, SCENE, GEO, UTILS, MAPTEXTURE, EVENTS, LABELS) {
+    function(THREE, $, d3, topojson, SCENE, GEO, UTILS, MAPTEXTURE, EVENTS, COUNTRY) {
 
     var renderer = SCENE.renderer;
     var scene = SCENE.scene;
     var camera = SCENE.camera;
+
+    // Create sky background scene
+    var skyScene = new THREE.Scene();
+    var skyCamera = new THREE.Camera();
 
     var controls = new THREE.TrackballControls(camera);
 
     d3.json('data/world.json', function (err, data) {
 
     d3.select("#loading").transition().duration(500).style("opacity", 0).remove();
-    var segments = 200; // number of vertices. Higher = better mouse accuracy
+    var segments = 300; // number of vertices. Higher = better mouse accuracy
 
-    var texLoader = new THREE.TextureLoader();
 
     var currentCountry, overlay;
 
@@ -27,23 +30,17 @@
       return MAPTEXTURE.mapTexture(country, color);
     });
 
+    var texLoader = new THREE.TextureLoader();
+
     // Globe with NASA earth map
-    var mapUrlEarth = "img/earth.jpg";
-    var mapEarth = texLoader.load(mapUrlEarth);
-    var earthMaterial = new THREE.MeshPhongMaterial({ map: mapEarth});
+    var earthTexture = texLoader.load("img/earth.jpg");
     var earthGeometry = new THREE.SphereGeometry(200, segments, segments); // radius, segments in width, segments in height
+    var earthMaterial = new THREE.MeshPhongMaterial({map: earthTexture});
     var earth = new THREE.Mesh(earthGeometry, earthMaterial);
     earth.rotation.y = Math.PI ;
     earth.addEventListener('click', onGlobeClick);
     earth.addEventListener('mousemove', onGlobeMousemove);
 
-    // Base globe with blue "water"
-    // let blueMaterial = new THREE.MeshPhongMaterial({color: '#668B8B', transparent: true, opacity: 0.1});
-    // let sphere = new THREE.SphereGeometry(200, segments, segments);
-    // let baseGlobe = new THREE.Mesh(sphere, blueMaterial);
-    // baseGlobe.rotation.y = Math.PI;
-    // baseGlobe.addEventListener('click', onGlobeClick);
-    // baseGlobe.addEventListener('mousemove', onGlobeMousemove);
 
     // add base map layer with all countries
     let worldTexture = MAPTEXTURE.mapTexture(countries, null);
@@ -53,15 +50,24 @@
     // create a container node and add the two meshes
     var root = new THREE.Object3D();
     root.scale.set(2.5, 2.5, 2.5);
-    // root.add(baseGlobe);
     root.add(baseMap);
     root.add(earth);
     scene.add(root);
 
+    // Load the sky background
+    var skyTexture = texLoader.load("img/sky.jpg");
+    var skyGeometry = new THREE.PlaneGeometry(2, 2, 0);
+    var skyMaterial = new THREE.MeshBasicMaterial({map: skyTexture});
+    var sky = new THREE.Mesh(skyGeometry, skyMaterial);
+
+    skyMaterial.depthTest = false;
+    skyMaterial.depthWrite = false;
+
+    // Add sky to the background scene
+    skyScene.add(skyCamera);
+    skyScene.add(sky);
 
     function onGlobeClick(event) {
-    // console.log(LABELS.text);
-    // scene.add(LABELS.text);
 
       // Get pointc, convert to latitude/longitude
       var latlng = GEO.getEventCenter.call(this, event);
@@ -88,6 +94,7 @@
     }
 
     function onGlobeMousemove(event) {
+      // COUNTRY.displayCountry("germany");
       var map, material;
 
       // Get pointc, convert to latitude/longitude
@@ -105,7 +112,7 @@
         d3.select("#msg").html(country.code);
 
          // Overlay the selected country
-        map = textureCache(country.code, '#006400');
+        map = textureCache(country.code, "rgba(3, 121, 0, 0.4)");
         material = new THREE.MeshPhongMaterial({map: map, transparent: true});
         if (!overlay) {
           overlay = new THREE.Mesh(new THREE.SphereGeometry(201, 40, 40), material);
@@ -123,6 +130,9 @@
 
   function animate() {
     requestAnimationFrame(animate);
+    renderer.autoClear = false;
+    renderer.clear();
+    renderer.render(skyScene, skyCamera);
     renderer.render(scene, camera);
   }
   animate();
