@@ -1,21 +1,40 @@
-define(["three", ], function(THREE) {
-	// var THREEx = DYNAMICTEXT.THREEx;
+define(["three", "d3", "utils", "geo"], function(THREE, d3, UTILS, GEO) {
+	var geo;
+	var countries;
+	var currentCountry;
+	var capital;
+	var inhabitants;
+	var area;
+	var flag;
 
-	// var dynamicTexture = new THREEx.DynamicTexture(512,512);
-	// dynamicTexture.context.font	= "bolder 90px Verdana";
-	// dynamicTexture.drawText('Hello', 32, 256, 'red');
-	// dynamicTexture.texture.needsUpdate  = true;
-	// var geometry = new THREE.PlaneGeometry( 5, 20, 32);
-	// var material = new THREE.MeshBasicMaterial({map : dynamicTexture.texture});
-	// var text = new THREE.Mesh(geometry, material);
+	d3.json('data/countries.json', function (err, data) {
+		d3.select("#loading").transition().duration(500).style("opacity", 0).remove();
+	    geo = GEO.countrydecoder(data.countries);
+	   	// console.log("countries.length JSON: " + countries.length);
+	});
+	// TODO: countries aus Json Datei herausholen, für einzelnes Land EIgenschaften ermitteln
+	function getCurrentCountryData(currentCountry) {
 
-	function displayCountry(countryname) {
+	    // for (let i = 0; i < countries.length; i++) {
+	    //     console.log("Country JSON: " + countries[i].name);
+     //      	if(currentCountry == countries[i].name) {
+	    //      	return {
+	    //         capital: countries[i].properties.capital,
+	    //         inhabitants: countries[i].properties.inhabitants,
+	    //         area: countries[i].properties.area,
+	    //         flag: countries[i].properties.flag
+		   //      };
+		   //  }
+     //    }
+	}
+
+	function displayCountry(countryname, position) {
 		var text = document.createElement('div');
 		text.style.position = 'absolute';
 		text.style.width = 200 + 'px';
 		text.style.height = 50 + 'px';
 		text.style.backgroundColor = "white";
-		text.innerHTML = "Deutschland";
+		text.innerHTML = countryname;
 		text.style.top = 200 + 'px';
 		text.style.left = 200 + 'px';
 		document.body.appendChild(text);
@@ -29,7 +48,8 @@ define(["three", ], function(THREE) {
 	}
 
 	var COUNTRY = {
-		displayCountry: displayCountry
+		displayCountry: displayCountry,
+		getCurrentCountryData: getCurrentCountryData
 	};
 	return COUNTRY;
 

@@ -11,7 +11,7 @@ requirejs.config({
 		"utils": 		"utils",
 		"setEvents":	"setEvents",
 		"trackback":	"TrackballControls",
-		"label": 	 	"countryLabel",
+		"country": 	 	"countryLabel",
 		"dynamicText": 	"threex.dynamictexture"
 	}
 });

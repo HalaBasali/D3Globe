@@ -1,7 +1,6 @@
   'use strict';
-  define(["three", "jquery", "d3", "topojson", "scene", "geo", "utils", "mapTexture", "setEvents", "label", "trackback"],
+  define(["three", "jquery", "d3", "topojson", "scene", "geo", "utils", "mapTexture", "setEvents", "country", "trackback"],
     function(THREE, $, d3, topojson, SCENE, GEO, UTILS, MAPTEXTURE, EVENTS, COUNTRY) {
-
     var renderer = SCENE.renderer;
     var scene = SCENE.scene;
     var camera = SCENE.camera;
@@ -24,35 +23,13 @@
     // Setup cache for country textures
     var countries = topojson.feature(data, data.objects.countries);
     var geo = GEO.geodecoder(countries.features);
-
+    console.log("geo: " + geo);
     var textureCache = UTILS.memoize(function (cntryID, color) {
       var country = geo.find(cntryID);
       return MAPTEXTURE.mapTexture(country, color);
     });
 
     var texLoader = new THREE.TextureLoader();
-
-    // Globe with NASA earth map
-    var earthTexture = texLoader.load("img/earth.jpg");
-    var earthGeometry = new THREE.SphereGeometry(200, segments, segments); // radius, segments in width, segments in height
-    var earthMaterial = new THREE.MeshPhongMaterial({map: earthTexture});
-    var earth = new THREE.Mesh(earthGeometry, earthMaterial);
-    earth.rotation.y = Math.PI ;
-    earth.addEventListener('click', onGlobeClick);
-    earth.addEventListener('mousemove', onGlobeMousemove);
-
-
-    // add base map layer with all countries
-    let worldTexture = MAPTEXTURE.mapTexture(countries, null);
-    let mapMaterial  = new THREE.MeshPhongMaterial({map: worldTexture, transparent: true});
-    var baseMap = new THREE.Mesh(new THREE.SphereGeometry(200, segments, segments), mapMaterial);
-    baseMap.rotation.y = Math.PI;
-    // create a container node and add the two meshes
-    var root = new THREE.Object3D();
-    root.scale.set(2.5, 2.5, 2.5);
-    root.add(baseMap);
-    root.add(earth);
-    scene.add(root);
 
     // Load the sky background
     var skyTexture = texLoader.load("img/sky.jpg");
@@ -66,6 +43,35 @@
     // Add sky to the background scene
     skyScene.add(skyCamera);
     skyScene.add(sky);
+
+    // Globe with NASA earth map
+    var earthTexture = texLoader.load("img/earth.jpg");
+    var earthGeometry = new THREE.SphereGeometry(200, segments, segments); // radius, segments in width, segments in height
+    var earthMaterial = new THREE.MeshPhongMaterial({map: earthTexture});
+    var earth = new THREE.Mesh(earthGeometry, earthMaterial);
+    earth.rotation.y = Math.PI ;
+    earth.addEventListener('click', onGlobeClick);
+    earth.addEventListener('mousemove', onGlobeMousemove);
+
+    /***** Todo: GLOW EFFECT **********
+      // add glow to earth sphere
+      var glowLight = new THREE.HemisphereLight('#ffffff', '#666666', 1.5);
+
+      var glowObject = new THREE.Object3D();
+     ***************************/
+
+    // add base map layer with all countries
+    let worldTexture = MAPTEXTURE.mapTexture(countries, null);
+    let mapMaterial  = new THREE.MeshPhongMaterial({map: worldTexture, transparent: true});
+    var baseMap = new THREE.Mesh(new THREE.SphereGeometry(200, segments, segments), mapMaterial);
+    baseMap.rotation.y = Math.PI;
+    // create a container node and add the two meshes
+    var root = new THREE.Object3D();
+    root.scale.set(2.5, 2.5, 2.5);
+    root.add(baseMap);
+    root.add(earth);
+    scene.add(root);
+
 
     function onGlobeClick(event) {
 
@@ -94,7 +100,6 @@
     }
 
     function onGlobeMousemove(event) {
-      // COUNTRY.displayCountry("germany");
       var map, material;
 
       // Get pointc, convert to latitude/longitude
@@ -111,8 +116,12 @@
         // Update the html
         d3.select("#msg").html(country.code);
 
+        console.log("Country MOVE: " + currentCountry);
+
+        // COUNTRY.getCurrentCountryData(currentCountry);
+
          // Overlay the selected country
-        map = textureCache(country.code, "rgba(3, 121, 0, 0.4)");
+        map = textureCache(country.code, "rgba(255, 78, 0, 0.4)");
         material = new THREE.MeshPhongMaterial({map: map, transparent: true});
         if (!overlay) {
           overlay = new THREE.Mesh(new THREE.SphereGeometry(201, 40, 40), material);

@@ -90,6 +90,30 @@ define(function() {
     };
   };
 
+  var countrydecoder = function (countries) {
+    var currentCountry;
+  for (let i = 0; i < countries.length; i++) {
+          currentCountry = countries[i];
+  }
+    return {
+      getNames: function (currentCountry) {
+        return countriesStore[name];
+      },
+      getCapital: function (currentCountry) {
+        return countriesStore[name].properties.capital;
+      },
+      getInhabitants: function (currentCountry) {
+        return countriesStore[name].properties.inhabitants;
+      },
+      getArea: function (currentCountry) {
+        return countriesStore[name].properties.area;
+      },
+      getFlag: function (currentCountry) {
+        return countriesStore[name].properties.flag;
+      }
+    }
+  };
+
   // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
   var pointInPolygon = function(poly, point) {
 
@@ -115,6 +139,7 @@ define(function() {
 
   var GEO = {
     geodecoder: geodecoder,
+    countrydecoder: countrydecoder,
     getEventCenter: getEventCenter,
     convertToXYZ: convertToXYZ
   };
