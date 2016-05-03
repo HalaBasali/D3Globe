@@ -3,7 +3,7 @@ requirejs.config({
 	paths: {
 		"jquery":		"jquery-2.1.4.min",
 		"init": 		"init",
-		"three" : 		"three.min",
+		"three" : 		"three",
 		"d3": 			"d3",
 		"topojson":		"topojson",
 		"scene": 		"scene",
@@ -12,7 +12,8 @@ requirejs.config({
 		"setEvents":	"setEvents",
 		"trackback":	"TrackballControls",
 		"country": 	 	"countryLabel",
-		"dynamicText": 	"threex.dynamictexture"
+		"orbit": 		"OrbitControls",
+		"projector": 	"Projector"
 	}
 });
 

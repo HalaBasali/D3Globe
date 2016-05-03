@@ -90,28 +90,14 @@ define(function() {
     };
   };
 
-  var countrydecoder = function (countries) {
-    var currentCountry;
-  for (let i = 0; i < countries.length; i++) {
-          currentCountry = countries[i];
-  }
-    return {
-      getNames: function (currentCountry) {
-        return countriesStore[name];
-      },
-      getCapital: function (currentCountry) {
-        return countriesStore[name].properties.capital;
-      },
-      getInhabitants: function (currentCountry) {
-        return countriesStore[name].properties.inhabitants;
-      },
-      getArea: function (currentCountry) {
-        return countriesStore[name].properties.area;
-      },
-      getFlag: function (currentCountry) {
-        return countriesStore[name].properties.flag;
-      }
+  var countrydecoder = function(countries) {
+    let store = {};
+
+    for (let i = 0; i < countries.length; i++) {
+      store[countries[i]] = countries[i];
     }
+    // console.log(store);
+    return store;
   };
 
   // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html

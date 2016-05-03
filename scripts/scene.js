@@ -1,10 +1,22 @@
 define(["three", "d3"], function(THREE, d3) {
 
-	var canvas = d3.select("body").append("canvas")
-	  .attr("width", window.innerWidth)
-	  .attr("height", window.innerHeight);
+	var canvas = d3.select("body").append("canvas");
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 
 	canvas.node().getContext("webgl");
+	var title = document.createElement('h1');
+	title.innerHTML = "Erkunde die Länder der Erde";
+	title.style.position = 'absolute';
+	title.style.width = 430 + 'px';
+	title.style.height = 30 + 'px';
+	title.style.backgroundColor = "rgba(89, 188, 255, 0.8)";
+	title.style.color = "white";
+	title.style.paddingLeft = 10 + "px";
+	title.style.paddingBottom = 10 + "px";
+	title.style.left = 30 + 'px';
+	title.style.top = 0 + "px";
+	document.body.appendChild(title);
 
 	var renderer = new THREE.WebGLRenderer({canvas: canvas.node(), antialias: true, alpha: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);

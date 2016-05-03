@@ -1,28 +1,23 @@
-{	"countries": [
-		{
-			"name": "Deutschland",
-	 		"properties": {
-		 		"capital": "Berlin",
-			 	"inhabitants": "2,7 Millionen Schulklassen",
-			 	"area": "50 Millionen Fußballfelder",
-			 	"flag": "flagge_de.png"
-	 		}
+{
+	"Deutschland": {
+		"name": "Deutschland",
+ 		"capital": "Berlin",
+	 	"inhabitants": "2,7 Millionen Schulklassen",
+	 	"area": "50 Millionen Fußballfelder",
+	 	"flag": "flagge_de.png"
 	 	},
-		{ 	"name": "Frankreich",
-			"properties": {
-		 		"capital": "Paris",
-			 	"inhabitants": "2,2 Millionen Schulklassen",
-			 	"area": "90 Millionen Fußballfelder",
-			 	"flag": "flagge_fr.png"
-		 	}
-		},
-	 	{	"name": "Italien",
-	 		"properties": {
-		 		"capital": "Rom",
-			 	"inhabitants": "2 Millionen Schulklassen",
-			 	"area": "42 Millionen Fußballfelder",
-			 	"flag": "flagge_it.png"
-	 		}
-	 	}
-	]
+	"Frankreich": {
+		"name": "Frankreich",
+ 		"capital": "Paris",
+	 	"inhabitants": "2,2 Millionen Schulklassen",
+	 	"area": "90 Millionen Fußballfelder",
+	 	"flag": "flagge_fr.png"
+	},
+	"Italien": {
+		"name": "Italien",
+ 		"capital": "Rom",
+	 	"inhabitants": "2 Millionen Schulklassen",
+	 	"area": "42 Millionen Fußballfelder",
+	 	"flag": "flagge_it.png"
+ 	}
 }
