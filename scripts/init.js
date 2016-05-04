@@ -73,7 +73,6 @@
     root.add(earth);
     scene.add(root);
 
-
     function onGlobeClick(event) {
       controls.enabled = false;
       // Get pointc, convert to latitude/longitude
@@ -152,7 +151,7 @@
 
 
         var xy_Values = toScreenXY(p);
-      // console.log("x, y: " + xy_Values[0] + " " + xy_Values[1]);
+        // console.log("x, y: " + xy_Values[0] + " " + xy_Values[1]);
 
         // console.log("currentCountry: " + currentCountry);
 
