@@ -97,7 +97,47 @@ define(function() {
       store[countries[i]] = countries[i];
     }
     // console.log(store);
-    return store;
+    return {
+      find: function(name) {
+        return store[name];
+      },
+      search: function(name) {
+        for (let i = 0; i < countries.length; i++) {
+          return {
+            capital: countries[i].capital,
+            inhabitants: countries[i].inhabitants,
+            area: countries[i].area,
+            flag: countries[i].flag
+          }
+        }
+        return null;
+      }
+    }
+  };
+
+  var infodecoder = function(countries) {
+    let store = {};
+
+    for (let i = 0; i < countries.length; i++) {
+      store[countries[i]] = countries[i];
+    }
+    // console.log(store);
+    return {
+      find: function(name) {
+        return store[name];
+      },
+      search: function(name) {
+        for (let i = 0; i < countries.length; i++) {
+          return {
+            capital: countries[i].capital,
+            inhabitants: countries[i].inhabitants,
+            area: countries[i].area,
+            flag: countries[i].flag
+          }
+        }
+        return null;
+      }
+    }
   };
 
   // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
@@ -127,7 +167,8 @@ define(function() {
     geodecoder: geodecoder,
     countrydecoder: countrydecoder,
     getEventCenter: getEventCenter,
-    convertToXYZ: convertToXYZ
+    convertToXYZ: convertToXYZ,
+    infodecoder: infodecoder
   };
 
   return GEO;

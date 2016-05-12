@@ -2,9 +2,22 @@
 <html lang="de">
 <head>
 	<meta charset="UTF-8">
-	<title>Hier erfährst du spannende Dinge über das Land!</title>
-	<script data-main="scripts/detailMain" src="scripts/require.js"></script>
+	<title>Hier erfährst du Spannendes über das Land!</title>
+	<link rel="stylesheet" type="text/css" href="css/detailview.css">
+	<script data-main="scripts/detailInit" src="scripts/require.js"></script>
 </head>
 <body>
+	<div id="mapContainer" width="500" height="700"></div>
+	<img id="mapimage" src="">
+	<div class="btncontainer">
+		<input id="animalbtn" class="infobtn" type="button" value="Tierwelt">
+		<input id="foodbtn" class="infobtn" type="button" value="Essen">
+		<input id="monumentsbtn" class="infobtn" type="button" value="Bauwerke">
+		<input id="clothesbtn" class="infobtn" type="button" value="Kleidung">
+		<input id="historybtn" class="infobtn" type="button" value="Geschichte">
+		<input id="plantsbtn" class="infobtn" type="button" value="Pflanzen">
+	</div>
+	<input id="backbtn" class="infobtn" type="button" value="Zurück">
+	<p id="bubbletxt"></p>
 </body>
 </html>

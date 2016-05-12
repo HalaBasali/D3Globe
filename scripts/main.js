@@ -13,7 +13,9 @@ requirejs.config({
 		"trackback":	"TrackballControls",
 		"country": 	 	"countryLabel",
 		"orbit": 		"OrbitControls",
-		"projector": 	"Projector"
+		"projector": 	"Projector",
+		"detailInit": 	"detailInit",
+		"keyboard": 	"THREEx.KeyboardState"
 	}
 });
 

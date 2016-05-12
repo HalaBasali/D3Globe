@@ -1,0 +1,53 @@
+#mapimage {
+	width: 350px;
+	position: absolute;
+	left: 0px;
+	margin: 10px;
+}
+
+.btncontainer {
+	position: absolute;
+	top: 500px;
+	margin-top: 20px;
+	width: 355px;		
+}
+
+.infobtn {
+    height: 60px;
+    width: 115px;
+    padding-bottom: 50px;
+    padding-left: 10px;	
+}
+
+input#animalbtn {
+    background: #ccc url('../img/cow.png') no-repeat 40px 20px;
+}
+input#foodbtn {
+    background: #ccc url('../img/bread.png') no-repeat 40px 20px;
+}
+input#monumentsbtn {
+    background: #ccc url('../img/building.png') no-repeat 40px 20px;
+}
+input#clothesbtn {
+    background: #ccc url('../img/shirt.png') no-repeat 40px 20px;
+}
+input#historybtn {
+    background: #ccc url('../img/book.png') no-repeat 40px 20px;
+}
+input#plantsbtn {
+    background: #ccc url('../img/leaf.png') no-repeat 40px 20px;
+}
+input#backbtn {
+    background: #ccc url('../img/globe.png') no-repeat 40px 20px;
+    position: absolute;
+	right: 50px;
+}
+
+p#bubbletxt {
+	width: 600px;
+    height: 300px;
+    border: solid #aaaaaa;
+    position: absolute;
+    left: 388px;
+    top: 193px;
+}

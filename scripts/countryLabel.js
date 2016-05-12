@@ -1,4 +1,5 @@
-define(["three", "d3", "utils", "geo"], function(THREE, d3, UTILS, GEO) {
+define(["three", "d3", "utils", "geo", "jquery"], function(THREE, d3, UTILS, GEO, $) {
+    
 	var country;
 	var countries = {
 		"Deutschland": {
@@ -76,46 +77,25 @@ define(["three", "d3", "utils", "geo"], function(THREE, d3, UTILS, GEO) {
 	    return getCurrentCountry().properties.flag;
 	}
 
-	document.onmousemove = getMouseXY;
-
-	var tempX = 0;
-	var tempY = 0;
-
-	function getMouseXY(e) {  // grab the x-y pos.s if browser is NS
-	    tempX = e.pageX;
-	    tempY = e.pageY;
-	  // catch possible negative values in NS4
-	  if (tempX < 0){tempX = 0}
-	  if (tempY < 0){tempY = 0}
-	  // console.log("x: " + tempX + ", " + "y: " + tempY);
-	  return true;
-}
-
 	var text;
 	var title;
 
-	function createTextfield(name, x, y) {
+	// $(document).ready(function($) {
+	// 	var p =  $('<p/>').appendTo('body').addClass( "myClass" );;
+	// });
+
+	function createTextfield(name) {
 		text = document.createElement('div');
-		text.style.fontSize = 12 + 'px';
-		text.style.position = 'absolute';
-		text.style.width = 250 + 'px';
-		text.style.height = 100 + 'px';
-		text.style.backgroundColor = "white";
-		text.style.top = (tempX -200) + 'px';
-		text.style.left = (tempY - 50) +'px';
-		text.style.padding = 5 + 'px';
+		text.className = 'countryinfo';
+		insertFlagImage(name);
 
 		title = document.createElement('h2');
-		title.innerHTML = name;
-		title.style.margin = 0 + 'px';
-		title.style.position = 'absolute';
+		title.innerText = name.toUpperCase();
 		text.appendChild(title);
-		document.body.appendChild(text);
 
-		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
-			insertFlagImage(name);
-			updateList(name);
-		}
+		updateList(name);
+
+		document.body.appendChild(text);
 		/*** Todo: Load countries data from JSON ***
 		country = geo.search(name);
      	***************************/
@@ -127,16 +107,15 @@ define(["three", "d3", "utils", "geo"], function(THREE, d3, UTILS, GEO) {
 		if(img == null) {
 			img = document.createElement("img");
 		}
-		img.style.width = 70 + 'px';
-		img.style.position = 'absolute';
-		img.style.right = 0 +'px';
 
 		if(name == "Deutschland") {
-			img.src = "img/flagge_de.png";
+			img.src = "img/map_de.jpg";
 		} else if(name == "Frankreich") {
-			img.src = "img/flagge_fr.png";
+			img.src = "img/map_fr.jpg";
 		} else if(name == "Italien") {
-			img.src = "img/flagge_it.png";
+			img.src = "img/map_de.jpg";
+		} else {
+			img.src = "img/map_de.jpg";
 		}
 		text.appendChild(img);
 	}
@@ -151,27 +130,33 @@ define(["three", "d3", "utils", "geo"], function(THREE, d3, UTILS, GEO) {
 	function updateList(name) {
 		if(list == null) {
 			list = document.createElement("ul");
-			list.style.width = 180 + 'px';
-			list.style.marginTop = 25 + 'px';
+
 			capitalElem = document.createElement("li");
 			inhabitantsElem = document.createElement("li");
 			areaElem = document.createElement("li");
-			furtherButton = document.createElement("input");
+			furtherButton = document.createElement("a");
 		}
-		var listCountry = countries[name];
-		console.log("listCountry: " + listCountry.name);
 
-		capitalElem.innerText = listCountry.capital;
-		inhabitantsElem.innerText = listCountry.inhabitants;
-		areaElem.innerText = listCountry.area;
+		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
+			var listCountry = countries[name];
+			// console.log("listCountry: " + listCountry.name);
+
+			capitalElem.innerText = "Hauptstadt: " + listCountry.capital;
+			inhabitantsElem.innerText = "Einwohner: " + listCountry.inhabitants;
+			areaElem.innerText = "Fläche: " + listCountry.area;
+		} else {
+			capitalElem.innerText = "Hauptstadt: " +  "capital";
+			inhabitantsElem.innerText = "Einwohner: " +  "inhabitants";
+			areaElem.innerText = "Fläche: " + "area";
+		}
 
 		list.appendChild(capitalElem);
 		list.appendChild(inhabitantsElem);
 		list.appendChild(areaElem);
 		text.appendChild(list);
 
-		furtherButton.type = "button";
-		furtherButton.value = "Erfahre mehr über das Land!";
+		furtherButton.className = 'button';
+		furtherButton.innerText = "Erfahre mehr Spannendes!";
 		furtherButton.addEventListener("click", openDetailpage);
 		text.appendChild(furtherButton);
 	}
@@ -181,32 +166,15 @@ define(["three", "d3", "utils", "geo"], function(THREE, d3, UTILS, GEO) {
 		console.log("CLICK!");
 	}
 
-	function showTextfield() {
-		text.style.display = 'block';
-	}
-
-	function hideTextfield() {
+	function deleteTextfield() {
 		var div = document.getElementsByTagName('div')[0];
 		document.body.removeChild(div);
 	}
-	function updateTextfield(name, x, y) {
+	function updateTextfield(name) {
 		if(text != null) {
-			hideTextfield();
+			deleteTextfield();
 		}
-		createTextfield(name, x, y);
-		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
-			insertFlagImage(name);
-			updateList(name);
-		}
-	}
-
-	function updateName(name) {
-		title.innerHTML = name;
-	}
-
-	function updatePostion(x, y) {
-		text.style.top = x +'px';
-		text.style.left = y +'px';
+		createTextfield(name);
 	}
 
 	var COUNTRY = {
