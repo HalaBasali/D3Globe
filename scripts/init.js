@@ -1,6 +1,6 @@
   'use strict';
-  define(["three", "jquery", "d3", "topojson", "scene", "geo", "utils", "mapTexture", "setEvents", "country", "keyboard", "orbit", "projector"],
-    function(THREE, $, d3, topojson, SCENE, GEO, UTILS, MAPTEXTURE, EVENTS, COUNTRY, KEY) {
+  define(["three", "jquery", "d3", "topojson", "scene", "geo", "utils", "mapTexture", "setEvents", "country", "orbit", "projector"],
+    function(THREE, $, d3, topojson, SCENE, GEO, UTILS, MAPTEXTURE, EVENTS, COUNTRY) {
     var renderer = SCENE.renderer;
     var scene = SCENE.scene;
     var camera = SCENE.camera;
@@ -54,14 +54,6 @@
 
     // controls = new THREE.OrbitControls(camera);
     // controls.addEventListener('change', render);
-
-    var keyboard = new THREEx.KeyboardState();
-    console.log("keyboard" + keyboard);
-	if(keyboard.pressed("l")) {
-		console.log("KEY PRESSED");
-	}
-	if( keyboard.pressed("shift+H") )     displayHelp();
-
 
     /***** Todo: GLOW EFFECT **********
       // add glow to earth sphere

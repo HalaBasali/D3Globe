@@ -5,9 +5,19 @@ h1 {
 	margin: 0;
 }
 
-img {
+#countryImg {
 	width: 340px;
 }
+
+#titleImg {
+	position: absolute;
+	width: 600px;
+	padding-left: 10px;
+	padding-top: 10px;
+	left: 15px;
+	top: 0px;
+}
+
 li {
 	line-height: 30px;
 }

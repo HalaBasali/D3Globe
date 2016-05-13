@@ -1,11 +1,18 @@
 'use strict';
-require(["geoHelpers", "jquery-2.1.4.min", "d3"], function(GEO) {
+require(["jquery-2.1.4.min", "d3"], function() {
 	$(document).ready(function($) {
-		var country = "Deutschland";
-		setImageSource(country);
 
 		var currentCountry = localStorage.currentcountry;
 		console.log("DetailView, currentCountry: " + currentCountry);
+		setImageSource(currentCountry);
+
+		var animalsInfo;
+		var foodInfo;
+		var monumentsInfo;
+		var clothesInfo;
+		var historyInfo;
+		var plantsInfo;
+		setCountryInfos();
 
 		var animalBtn = $("#animalbtn");
 		var foodBtn = $("#foodbtn");
@@ -13,21 +20,25 @@ require(["geoHelpers", "jquery-2.1.4.min", "d3"], function(GEO) {
 		var clothesBtn = $("#clothesbtn");
 		var historyBtn = $("#historybtn");
 		var plantsBtn = $("#plantsbtn");
-		var backbtn = $("#backbtn");
 		addlistenersToInfobuttons();
 
+		var backbtn = $("#backbtn");
+		backbtn.click(function goBack() {
+		    window.history.back();
+		});
+		var bubbleText = $("#bubbletxt");
 
 		function onClickInfoButton(event) {
 			var id = event.target.id;
 			//console.log(id + " CLICKED!");
 
 			switch(id) {
-				case "animalbtn": console.log(id + " CLICKED!");break;
-				case "foodbtn": console.log(id + " CLICKED!");break;
-				case "monumentsbtn": console.log(id + " CLICKED!");break;
-				case "clothesbtn": console.log(id + " CLICKED!");break;
-				case "historybtn": console.log(id + " CLICKED!");break;
-				case "plantsbtn": console.log(id + " CLICKED!");break;
+				case "animalbtn": bubbleText.html("<b>" + currentCountry + " </b><br/> " + animalsInfo);break;
+				case "foodbtn": bubbleText.text(foodInfo);break;
+				case "monumentsbtn": bubbleText.text(monumentsInfo);break;
+				case "clothesbtn": bubbleText.text(clothesInfo);break;
+				case "historybtn": bubbleText.text(historyInfo);break;
+				case "plantsbtn": bubbleText.text(plantsInfo);break;
 				default: "Nichts angeclickt"; break;
 			}
 		}
@@ -42,38 +53,26 @@ require(["geoHelpers", "jquery-2.1.4.min", "d3"], function(GEO) {
 		}
 
 		function setImageSource(countryname) {
-			$("#mapimage").attr("src","img/deutschland-bundeslaender.jpg");
-			console.log("Image set");
+			if(countryname == "Deutschland") {
+				$("#mapimage").attr("src","img/de_big.jpg");
+			}
+			if(countryname == "Frankreich") {
+				$("#mapimage").attr("src","img/de_big.jpg");
+			}
 		}
 
-	d3.json('data/detailinfo.json', function (err, json) {
-		d3.select("#loading").transition().duration(500).style("opacity", 0).remove();
-	    // countries = GEO.infodecoder(json);
-	    
-	    console.log(json);
-	});
-
-
-	// function setCurrentCountry(currentCountry) {
-	// 	var funcs = [];
-	// 	for(var new_i =0; new_i<countries.length; new_i++){
-	// 	    (function(i){
-	// 	        funcs[i] = function(){
-	// 		    	console.log("currentCountry: " + currentCountry);
-	// 		    	if(countries[i].name == currentCountry) {
-	// 		    		// console.log("countries[i].name: " + countries[i].name);
-	// 					country = countries[i];
-	// 			    } else {
-	// 		    		return null;
-	// 		    	}
-	// 		    }
-	//     	})(new_i);
-	// 	}
-
-	// 	for(var j =0; j<3; j++){
-	// 	    funcs[j]();
-	// 	}
-	// }
-
+		function setCountryInfos() {
+			d3.json('data/detailinfo.json', function (err, json) {
+				d3.select("#loading").transition().duration(500).style("opacity", 0).remove();
+			    var countries = json;
+			    var country = countries[currentCountry];
+			    animalsInfo = country.animals;
+			    foodInfo = country.food;
+			    monumentsInfo = country.monuments;
+			    clothesInfo = country.clothes;
+			    historyInfo = country.history;
+			    plantsInfo = country.plants;
+			});
+		}
 	});
 });

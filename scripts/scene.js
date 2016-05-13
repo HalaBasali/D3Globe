@@ -5,14 +5,11 @@ define(["three", "d3"], function(THREE, d3) {
 	canvas.height = window.innerHeight;
 
 	canvas.node().getContext("webgl");
+
 	var title = document.createElement('img');
-	title.style.position = 'absolute';
+	title.id = 'titleImg';
 	title.src = "img/schrift.png";
-	title.style.width = 600 + 'px';
-	title.style.paddingLeft = 10 + "px";
-	title.style.paddingTop = 10 + "px";
-	title.style.left = 15 + 'px';
-	title.style.top = 0 + "px";
+
 	document.body.appendChild(title);
 
 	var renderer = new THREE.WebGLRenderer({canvas: canvas.node(), antialias: true, alpha: true});

@@ -1,23 +1,17 @@
 {
 	"Deutschland": {
-		"name": "Deutschland",
  		"capital": "Berlin",
 	 	"inhabitants": "2,7 Millionen Schulklassen",
-	 	"area": "50 Millionen Fußballfelder",
-	 	"flag": "flagge_de.png"
+	 	"area": "50 Millionen Fußballfelder"
 	 	},
 	"Frankreich": {
-		"name": "Frankreich",
  		"capital": "Paris",
 	 	"inhabitants": "2,2 Millionen Schulklassen",
-	 	"area": "90 Millionen Fußballfelder",
-	 	"flag": "flagge_fr.png"
+	 	"area": "90 Millionen Fußballfelder"
 	},
 	"Italien": {
-		"name": "Italien",
  		"capital": "Rom",
 	 	"inhabitants": "2 Millionen Schulklassen",
-	 	"area": "42 Millionen Fußballfelder",
-	 	"flag": "flagge_it.png"
+	 	"area": "42 Millionen Fußballfelder"
  	}
 }
