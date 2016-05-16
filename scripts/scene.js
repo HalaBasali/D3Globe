@@ -6,12 +6,6 @@ define(["three", "d3"], function(THREE, d3) {
 
 	canvas.node().getContext("webgl");
 
-	var title = document.createElement('img');
-	title.id = 'titleImg';
-	title.src = "img/schrift.png";
-
-	document.body.appendChild(title);
-
 	var renderer = new THREE.WebGLRenderer({canvas: canvas.node(), antialias: true, alpha: true});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);

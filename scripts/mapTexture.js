@@ -20,10 +20,6 @@ function mapTexture(geojson, color) {
   context.strokeStyle = "#fff";
   context.lineWidth = 1.2;
   context.fillStyle = color || "#6600B380";
-  // context.globalAlpha = 0.4;
-
-
-
   context.beginPath();
 
   path(geojson);

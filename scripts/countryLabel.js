@@ -10,6 +10,7 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 	var title;
 
 	var img;
+	var closeButton;
 
 	function setCountryInfos(name) {
 		d3.json('data/countries.json', function (err, json) {
@@ -27,6 +28,7 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
 			setCountryInfos(name);
 		}
+
 		text = document.createElement('div');
 		text.className = 'countryinfo';
 		insertFlagImage(name);
@@ -34,6 +36,12 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 		title = document.createElement('h2');
 		title.innerText = name.toUpperCase();
 		text.appendChild(title);
+
+		closeButton = document.createElement("input");
+		closeButton.type = 'button';
+		closeButton.id = 'closebutton';			
+		closeButton.addEventListener("click", deleteTextfield);
+		text.appendChild(closeButton);
 
 		updateList(name);
 
@@ -73,6 +81,7 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 			inhabitantsElem = document.createElement("li");
 			areaElem = document.createElement("li");
 			furtherButton = document.createElement("a");
+			furtherButton.id = 'furtherbutton';
 		}
 
 		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
@@ -105,8 +114,10 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 	}
 
 	function deleteTextfield() {
-		var div = document.getElementsByTagName('div')[0];
-		document.body.removeChild(div);
+		var div = document.getElementsByClassName('countryinfo')[0];
+		if(div != null) {
+			document.body.removeChild(div);
+		}
 	}
 
 	function updateTextfield(name) {
