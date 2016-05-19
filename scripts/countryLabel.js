@@ -1,6 +1,6 @@
-define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
+define(["three", "d3", "utils", "jquery", "countries", "detailInit"], function(THREE, d3, UTILS, $, COUNTRIES, DETAILVIEW) {
 
-	var countries;
+	var countries = COUNTRIES.data;
 	var country;
 	var capital;
 	var inhabitants;
@@ -13,19 +13,14 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 	var closeButton;
 
 	function setCountryInfos(name) {
-		d3.json('data/countries.json', function (err, json) {
-			d3.select("#loading").transition().duration(500).style("opacity", 0).remove();
-		    countries = json;
-		    console.log("countries: " + countries);
 		    country = countries[name];
 		    capital = country.capital;
 		    inhabitants = country.inhabitants;
 		    area = country.area;
-		});
 	}
 
 	function createTextfield(name) {
-		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
+		if(name == "Deutschland" || name == "Frankreich") {
 			setCountryInfos(name);
 		}
 
@@ -39,11 +34,13 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 
 		closeButton = document.createElement("input");
 		closeButton.type = 'button';
-		closeButton.id = 'closebutton';			
+		closeButton.id = 'closebutton';
 		closeButton.addEventListener("click", deleteTextfield);
 		text.appendChild(closeButton);
 
-		updateList(name);
+		img.onload = function() {
+			updateList(name);
+		};
 
 		document.body.appendChild(text);
 	}
@@ -58,11 +55,10 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 			img.src = "img/map_de.jpg";
 		} else if(name == "Frankreich") {
 			img.src = "img/map_fr.jpg";
-		} else if(name == "Italien") {
-			img.src = "img/map_de.jpg";
 		} else {
-			img.src = "img/map_de.jpg";
+			img.src = "img/map_default.jpg";
 		}
+		// onload Funktion definieren, damit das Bild zuerst geladen wird
 		text.appendChild(img);
 	}
 
@@ -84,19 +80,15 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 			furtherButton.id = 'furtherbutton';
 		}
 
-		if(name == "Deutschland" || name == "Frankreich" || name == "Italien") {
-			// var listCountry = countries[name];
-			// console.log("listCountry: " + listCountry.name);
-
+		if(name == "Deutschland" || name == "Frankreich") {
 			capitalElem.innerText = "Hauptstadt: " + capital;
 			inhabitantsElem.innerText = "Einwohner: " + inhabitants;
 			areaElem.innerText = "Fläche: " +  area;
-
-			furtherButton.addEventListener("click", openDetailpage);
+			furtherButton.addEventListener("click", showDetailOverlay);
 		} else {
-			capitalElem.innerText = "Hauptstadt: " +  "capital";
-			inhabitantsElem.innerText = "Einwohner: " +  "inhabitants";
-			areaElem.innerText = "Fläche: " + "area";
+			capitalElem.innerText = "Hauptstadt: " +  "Hauptstadt";
+			inhabitantsElem.innerText = "Einwohner: " +  "x,y Millionen Schulklassen";
+			areaElem.innerText = "Fläche: " + "x Millionen Fußballfelder";
 		}
 
 		list.appendChild(capitalElem);
@@ -109,8 +101,12 @@ define(["three", "d3", "utils", "jquery"], function(THREE, d3, UTILS, $) {
 		text.appendChild(furtherButton);
 	}
 
-	function openDetailpage(event) {
-		window.location.href = "detail.html";
+	function showDetailOverlay(event) {
+		$(document).ready(function($) {
+			deleteTextfield();
+			DETAILVIEW.showDetails();
+			$("#overlay").show();
+		});
 	}
 
 	function deleteTextfield() {

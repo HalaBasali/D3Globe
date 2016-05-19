@@ -5,12 +5,29 @@
 	<title>Entdecke die Länder der Erde</title>
 	<script data-main="scripts/main" src="scripts/require.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/countryinfo.css">
+	<link rel="stylesheet" type="text/css" href="css/detailview.css">
 </head>
 <body>
 	<img id="titleImg" src="img/schrift.png" alt="title">
+	<div id="glow"></div>
+	<div id="overlay">
+		<div id="mapContainer" width="500" height="600"></div>
+		<img id="mapimage" src="">
+		<div class="btncontainer">
+			<input id="animalbtn" class="infobtn" type="button" value="Tierwelt">
+			<input id="foodbtn" class="infobtn" type="button" value="Essen">
+			<input id="monumentsbtn" class="infobtn" type="button" value="Bauwerke">
+			<input id="clothesbtn" class="infobtn" type="button" value="Kleidung">
+			<input id="historybtn" class="infobtn" type="button" value="Geschichte">
+			<input id="plantsbtn" class="infobtn" type="button" value="Pflanzen">
+		</div>
+		<input id="backbtn" class="infobtn" type="button" value="Zurück">
+		<p id="bubbletxt"></p>
+	</div>
+	<!--
 	<input id="rightarrow" type="button">
 	<input id="leftarrow" type="button">
-	<!--
+	
 	<div id="countryList" class="dropdown-content">
 		<h4>EUROPA</h4>
 	    <input class="listelement" type="button" value="Deutschland">

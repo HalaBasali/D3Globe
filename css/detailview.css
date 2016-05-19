@@ -7,10 +7,10 @@
 
 .btncontainer {
 	position: absolute;
-	top: 550px;
-	left: 550px;
+	top: 595px;
+    left: 725px;
 	margin-top: 20px;
-	width: 355px;
+	width: 800px;
 }
 
 .infobtn {
@@ -45,10 +45,10 @@ input#backbtn {
 }
 
 p#bubbletxt {
-	width: 450px;
+	width: 850px;
     height: 450px;
     border: solid #aaaaaa;
     position: absolute;
-    left: 540px;
-    top: 60px;
+	left: 580px;
+    top: 115px;
 }

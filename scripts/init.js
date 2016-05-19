@@ -1,4 +1,4 @@
-  'use strict';
+  "use strict";
   define(["three", "jquery", "d3", "topojson", "scene", "geo", "utils", "mapTexture", "setEvents", "country", "orbit", "projector"],
     function(THREE, $, d3, topojson, SCENE, GEO, UTILS, MAPTEXTURE, EVENTS, COUNTRY) {
     var renderer = SCENE.renderer;
@@ -45,16 +45,22 @@
     // Globe with NASA earth map
     var earthTexture = texLoader.load("img/worldmap_pappe.jpg");
     var earthGeometry = new THREE.SphereGeometry(200, segments, segments); // radius, segments in width, segments in height
-	
     var earthMaterial = new THREE.MeshPhongMaterial({map: earthTexture});
     var earth = new THREE.Mesh(earthGeometry, earthMaterial);
     earth.position.set( 0, 0, 0 );
     earth.rotation.y = Math.PI ;
+
+    // earth.rotation.y = Math.PI * 4 / 3;
+    // earth.rotation.x = Math.PI / 6;
+
     earth.addEventListener('click', onGlobeClick);
     earth.addEventListener('mousemove', onGlobeMousemove);
+
+    // Move camera with drag & drop
     // controls = new THREE.OrbitControls(camera, root);
     // controls.addEventListener('change', render);
 
+    /***** Todo: GLOW EFFECT **********
 
  //    var customMaterial = new THREE.ShaderMaterial({
 	//     uniforms: {
@@ -78,16 +84,12 @@
 	// glow.add(moonGlow);
  //    glow.position.setX(80);
  //    scene.add(glow);
-    /***** Todo: GLOW EFFECT **********
-      // add glow to earth sphere
-      var glowLight = new THREE.HemisphereLight('#ffffff', '#666666', 1.5);
 
-      var glowObject = new THREE.Object3D();
      ***************************/
 
     // add base map layer with all countries
-    let worldTexture = MAPTEXTURE.mapTexture(countries, null);
-    let mapMaterial  = new THREE.MeshPhongMaterial({map: worldTexture, transparent: true});
+    var worldTexture = MAPTEXTURE.mapTexture(countries, null);
+    var mapMaterial  = new THREE.MeshPhongMaterial({map: worldTexture, transparent: true});
     var baseMap = new THREE.Mesh(new THREE.SphereGeometry(200, segments, segments), mapMaterial);
     baseMap.rotation.y = Math.PI;
     // create a container node and add the two meshes
@@ -95,17 +97,18 @@
     root.scale.set(2.5, 2.5, 2.5);
     root.add(baseMap);
     root.add(earth);
-    root.position.setX(80);
+    // root.position.setX(80);
     scene.add(root);
 
-	$(document).ready(function($) {
-		 $("#leftarrow").click(function(){
-		 	 root.rotateY( - Math.PI / 32 );
-		 });
-		 $("#rightarrow").click(function(){
-		 	root.rotateY( Math.PI / 32 );
-		 });
-	});
+// move world with arrows
+	// $(document).ready(function($) {
+	// 	 $("#leftarrow").click(function(){
+	// 	 	 root.rotateY( - Math.PI / 32 );
+	// 	 });
+	// 	 $("#rightarrow").click(function(){
+	// 	 	root.rotateY( Math.PI / 32 );
+	// 	 });
+	// });
 
     function onGlobeClick(event) {
       // Get pointc, convert to latitude/longitude
@@ -113,9 +116,11 @@
 
       // Get new camera position
       var temp = new THREE.Mesh();
-      temp.position.copy(GEO.convertToXYZ(latlng, 900));
+      temp.position.copy(GEO.convertToXYZ(latlng, 1000));
       temp.lookAt(root.position);
       temp.rotateY(Math.PI);
+
+
 
       for (let key in temp.rotation) {
         if (temp.rotation[key] - camera.rotation[key] > Math.PI) {
@@ -148,7 +153,7 @@
 
         // Set local storage for detail page
         if(typeof(Storage) !== "undefined") {
-			console.log("Init.js, currentCountry: " + currentCountry);
+			// console.log("Init.js, currentCountry: " + currentCountry);
         	if(currentCountry == "Deutschland" || currentCountry == "Frankreich" || currentCountry == "Italien") {
 	        localStorage.setItem("currentcountry", currentCountry);
         	} else {
@@ -160,6 +165,9 @@
 
         // console.log("currentCountry: " + currentCountry);
 
+		// if(currentCountry == "Deutschland" || currentCountry == "Frankreich") {
+	 //        COUNTRY.setCountryInfos(currentCountry);
+		// }
         COUNTRY.updateTextfield(currentCountry);
         // Update the html
         d3.select("#msg").html(country.code);
@@ -226,19 +234,56 @@
 
 	window.addEventListener('keydown', handleKeyDown, false);
 	window.addEventListener('keyup', handleKeyUp, false);
- var zoomFactor = 0.1;
+	 var zoomFactor = 0.1;
+	 var rotSpeed = .02;
+
+	function checkRotation(){
+
+	    var x = camera.position.x,
+	        y = camera.position.y,
+	        z = camera.position.z;
+
+	    if (window.isRightDown){ 
+	        camera.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
+	        camera.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
+	    } else if (window.isLeftDown){
+	        camera.position.x = x * Math.cos(rotSpeed) - z * Math.sin(rotSpeed);
+	        camera.position.z = z * Math.cos(rotSpeed) + x * Math.sin(rotSpeed);
+	    }
+
+    	camera.lookAt(scene.position);
+	}
+
+  var glow = $("#glow");
+  var valueWH = 64;
+  var valueTL = 32;
+
+  function scaleUpGlow() {
+    $(document).ready(function($) {
+      glow.css("width",'+=' + valueWH + 'px');
+      glow.css("height",'+=' + valueWH + 'px');
+      glow.css("top",'-=' + valueTL + 'px');
+      glow.css("left",'-=' + valueTL + 'px');
+    });
+  }
+
+  function scaleDownGlow() {
+    $(document).ready(function($) {
+      glow.css("width",'-=' + valueWH + 'px');
+      glow.css("height",'-=' + valueWH + 'px');
+      glow.css("top",'+=' + valueTL + 'px');
+      glow.css("left",'+=' + valueTL + 'px');
+    });
+  }
 
   function animate() {
-  	if (window.isLeftDown) {
-		root.rotateY( - Math.PI / 64 );
-  	}
-  	if (window.isRightDown) {
-		root.rotateY( Math.PI / 64 );
-  	}
+  	checkRotation();
+
   	if (window.isTopDown) {
   		if(camera.zoom < 2.4) {
 		camera.zoom += zoomFactor;
 		camera.updateProjectionMatrix();
+    scaleUpGlow() ;
 		// console.log("zoom: " + camera.zoom);
   		}
   	}
@@ -246,6 +291,7 @@
   		if(camera.zoom > 1) {
 		camera.zoom -= zoomFactor;
 		camera.updateProjectionMatrix();
+    scaleDownGlow();
 		// console.log("zoom: " + camera.zoom);
   		}
   	}
@@ -254,10 +300,4 @@
     render();
   }
   animate();
-
-  var INIT = {
-      currentCountry: currentCountry
-  }
-
-  return INIT;
 });

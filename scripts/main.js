@@ -10,12 +10,12 @@ requirejs.config({
 		"geo": 			"geoHelpers",
 		"utils": 		"utils",
 		"setEvents":	"setEvents",
-		"trackback":	"TrackballControls",
 		"country": 	 	"countryLabel",
 		"orbit": 		"OrbitControls",
 		"projector": 	"Projector",
 		"detailInit": 	"detailInit",
-		"keyboard": 	"THREEx.KeyboardState"
+		"countries": 	"countries",
+		"detailInfo": 	"detailInfo"
 	}
 });
 
