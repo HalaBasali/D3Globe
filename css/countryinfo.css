@@ -11,13 +11,17 @@ html {
   height:100%;
   background:#000;
 }
+
+#infodiv {
+	display: none;
+}
 #glow {
     display: block;
     height: 638px;
     width: 638px;
     border-radius: 100%;
     background-color: rgba(0, 0, 0, 0.0);
-    box-shadow: 0px 0 70px 15px ivory;
+    box-shadow: 0px 0 10px 15px rgb(126, 186, 234);
     position: absolute;
     top: 77px;
     left: 489px;
@@ -33,26 +37,6 @@ html {
 	padding-top: 10px;
 	left: 15px;
 	top: 0px;
-}
-
-#leftarrow {
-	position: absolute;
-	left: 445px;
-	bottom: 10px;
-	width: 70px;
-	height: 70px;
-	background: url('../img/arrow_left.png') no-repeat;
-	border: 0px;
-}
-
-#rightarrow {
-	position: absolute;
-	right: 290px;
-	bottom: 10px;
-	width: 70px;
-	height: 70px;
-	background: url('../img/arrow_right.png') no-repeat;
-	border: 0px;
 }
 
 .countryList {

@@ -9,7 +9,9 @@
     // Create sky background scene
     var skyScene = new THREE.Scene();
     var skyCamera = new THREE.Camera();
-	var root;
+
+    var uncoloredTex;
+	  var root;
     var currentCountry;
 
     d3.json('data/world.json', function (err, data) {
@@ -49,43 +51,13 @@
     var earth = new THREE.Mesh(earthGeometry, earthMaterial);
     earth.position.set( 0, 0, 0 );
     earth.rotation.y = Math.PI ;
-
-    // earth.rotation.y = Math.PI * 4 / 3;
-    // earth.rotation.x = Math.PI / 6;
-
     earth.addEventListener('click', onGlobeClick);
     earth.addEventListener('mousemove', onGlobeMousemove);
 
+    uncoloredTex = texLoader.load("img/worldmap_pappe_uncolored.jpg");
     // Move camera with drag & drop
     // controls = new THREE.OrbitControls(camera, root);
     // controls.addEventListener('change', render);
-
-    /***** Todo: GLOW EFFECT **********
-
- //    var customMaterial = new THREE.ShaderMaterial({
-	//     uniforms: {
-	// 		"c":   { type: "f", value: 0.8 },
-	// 		"p":   { type: "f", value: 2.0 },
-	// 		glowColor: { type: "c", value: new THREE.Color(0xffffff) },
-	// 		viewVector: { type: "v3", value: camera.position }
-	// 	},
-	// 	vertexShader:   document.getElementById( 'vertexShader'   ).textContent,
-	// 	fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-	// 	side: THREE.BackSide,
-	// 	blending: THREE.AdditiveBlending,
-	// 	transparent: true
-	// });
-
-	// var moonGlow = new THREE.Mesh( earthGeometry.clone(), customMaterial.clone() );
- //    // moonGlow.position.set( 0, 0, 0 );
-	// moonGlow.scale.multiplyScalar(1.2);
-	// var glow = new THREE.Object3D();
- //    glow.scale.set(2.5, 2.5, 2.5);
-	// glow.add(moonGlow);
- //    glow.position.setX(80);
- //    scene.add(glow);
-
-     ***************************/
 
     // add base map layer with all countries
     var worldTexture = MAPTEXTURE.mapTexture(countries, null);
@@ -100,17 +72,11 @@
     // root.position.setX(80);
     scene.add(root);
 
-// move world with arrows
-	// $(document).ready(function($) {
-	// 	 $("#leftarrow").click(function(){
-	// 	 	 root.rotateY( - Math.PI / 32 );
-	// 	 });
-	// 	 $("#rightarrow").click(function(){
-	// 	 	root.rotateY( Math.PI / 32 );
-	// 	 });
-	// });
-
     function onGlobeClick(event) {
+      var map, material;
+      // show more information about the country
+      COUNTRY.slideDownInfo();
+
       // Get pointc, convert to latitude/longitude
       var latlng = GEO.getEventCenter.call(this, event);
 
@@ -119,8 +85,6 @@
       temp.position.copy(GEO.convertToXYZ(latlng, 1000));
       temp.lookAt(root.position);
       temp.rotateY(Math.PI);
-
-
 
       for (let key in temp.rotation) {
         if (temp.rotation[key] - camera.rotation[key] > Math.PI) {
@@ -134,6 +98,23 @@
 
       var tweenRot = UTILS.getTween.call(camera, 'rotation', temp.rotation);
       d3.timer(tweenRot);
+
+      // Look for country at that latitude/longitude
+      var country = geo.search(latlng[0], latlng[1]);
+             // Overlay the selected country
+        map = textureCache(country.code, "rgba(225, 90, 0, 1.0)");
+        material = new THREE.MeshPhongMaterial({map: map, transparent: true});
+        if (!overlay) {
+          overlay = new THREE.Mesh(new THREE.SphereGeometry(201, 40, 40), material);
+          overlay.rotation.y = Math.PI;
+          root.add(overlay);
+        } else {
+          overlay.material = material;
+        }
+
+        // earth.material.map = uncoloredTex;
+        // earth.material.needsUpdate = true;
+
     }
 
     function onGlobeMousemove(event) {
@@ -243,7 +224,7 @@
 	        y = camera.position.y,
 	        z = camera.position.z;
 
-	    if (window.isRightDown){ 
+	    if (window.isRightDown){
 	        camera.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
 	        camera.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
 	    } else if (window.isLeftDown){
@@ -281,18 +262,16 @@
 
   	if (window.isTopDown) {
   		if(camera.zoom < 2.4) {
-		camera.zoom += zoomFactor;
-		camera.updateProjectionMatrix();
-    scaleUpGlow() ;
-		// console.log("zoom: " + camera.zoom);
+    		camera.zoom += zoomFactor;
+    		camera.updateProjectionMatrix();
+        scaleUpGlow() ;
   		}
   	}
   	if (window.isDownDown) {
   		if(camera.zoom > 1) {
-		camera.zoom -= zoomFactor;
-		camera.updateProjectionMatrix();
-    scaleDownGlow();
-		// console.log("zoom: " + camera.zoom);
+    		camera.zoom -= zoomFactor;
+    		camera.updateProjectionMatrix();
+        scaleDownGlow();
   		}
   	}
 

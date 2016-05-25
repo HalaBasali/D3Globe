@@ -11,6 +11,7 @@ define(["three", "d3", "utils", "jquery", "countries", "detailInit"], function(T
 
 	var img;
 	var closeButton;
+	var infoDiv;
 
 	function setCountryInfos(name) {
 		    country = countries[name];
@@ -38,9 +39,11 @@ define(["three", "d3", "utils", "jquery", "countries", "detailInit"], function(T
 		closeButton.addEventListener("click", deleteTextfield);
 		text.appendChild(closeButton);
 
-		img.onload = function() {
-			updateList(name);
-		};
+		infoDiv = document.createElement("div");
+		infoDiv.id = 'infodiv';
+		text.appendChild(infoDiv);
+
+		updateList(name);
 
 		document.body.appendChild(text);
 	}
@@ -94,11 +97,11 @@ define(["three", "d3", "utils", "jquery", "countries", "detailInit"], function(T
 		list.appendChild(capitalElem);
 		list.appendChild(inhabitantsElem);
 		list.appendChild(areaElem);
-		text.appendChild(list);
+		infoDiv.appendChild(list);
 
 		furtherButton.className = 'button';
 		furtherButton.innerText = "Erfahre mehr Spannendes!";
-		text.appendChild(furtherButton);
+		infoDiv.appendChild(furtherButton);
 	}
 
 	function showDetailOverlay(event) {
@@ -123,8 +126,15 @@ define(["three", "d3", "utils", "jquery", "countries", "detailInit"], function(T
 		createTextfield(name);
 	}
 
+	function slideDownInfo() {
+		$(document).ready(function() {
+		    $("#infodiv").slideDown(400);
+		});
+	}
+
 	var COUNTRY = {
-		updateTextfield: updateTextfield
+		updateTextfield: updateTextfield,
+		slideDownInfo: slideDownInfo
 	};
 	return COUNTRY;
 });
